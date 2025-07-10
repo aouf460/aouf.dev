@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Omar Aouf - Software Engineer & Project Manager | Professional Portfolio</title>
+    <meta name="description" content="Omar Aouf - Software Engineer & Project Manager at DXB Live, Dubai World Trade Centre. Expertise in Bootstrap, React.js, Liferay, Node.js/Express.js, MongoDB. Leading digital solutions for government and corporate clients.">
+    
+    <!-- External CDN Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Critical CSS for instant loading */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0f0f23;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+        
+        .loading-logo {
+            font-size: 6rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .loading-text {
+            font-size: 1.5rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-logo">O/.</div>
+        <div class="loading-text">
+            Loading Professional Portfolio<br>
+            <small style="font-size: 1rem; opacity: 0.6;">Omar Aouf - Software Engineer & Project Manager</small>
+        </div>
+    </div>
+    
+    <!-- Main App Container -->
+    <div id="root"></div>
+    
+    <script type="module">
+        // Portfolio Application
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = Motion;
+        const { 
+            Menu, X, Code, Briefcase, User, Mail, Phone, 
+            ExternalLink, Github, Linkedin, MapPin,
+            Palette, Server, Users, ChevronDown,
+            Eye, Calendar, Award
+        } = lucide;
+        
+        // Initialize EmailJS
+        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with actual key
+        
+        // Main Portfolio Component
+        function Portfolio() {
+            const [isLoading, setIsLoading] = useState(true);
+            const [currentSection, setCurrentSection] = useState('hero');
+            
+            useEffect(() => {
+                // Simulate loading time
+                const timer = setTimeout(() => {
+                    setIsLoading(false);
+                    document.getElementById('loading-screen').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.display = 'none';
+                    }, 1000);
+                }, 2000);
+                
+                return () => clearTimeout(timer);
+            }, []);
+            
+            if (isLoading) {
+                return null; // Loading screen handles this
+            }
+            
+            return React.createElement('div', {
+                className: 'min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900'
+            }, [
+                React.createElement(Navigation, { key: 'nav', currentSection, setCurrentSection }),
+                React.createElement(Hero, { key: 'hero' }),
+                React.createElement(About, { key: 'about' }),
+                React.createElement(Skills, { key: 'skills' }),
+                React.createElement(Projects, { key: 'projects' }),
+                React.createElement(Contact, { key: 'contact' }),
+                React.createElement(FloatingElements, { key: 'floating' }),
+                React.createElement(CursorTracker, { key: 'cursor' })
+            ]);
+        }
+        
+        // Navigation Component
+        function Navigation({ currentSection, setCurrentSection }) {
+            const [isOpen, setIsOpen] = useState(false);
+            
+            const navItems = [
+                { id: 'hero', label: 'Home', icon: User },
+                { id: 'about', label: 'About', icon: User },
+                { id: 'skills', label: 'Skills', icon: Code },
+                { id: 'projects', label: 'Projects', icon: Briefcase },
+                { id: 'contact', label: 'Contact', icon: Mail }
+            ];
+            
+            return React.createElement('nav', {
+                className: 'fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10'
+            }, [
+                React.createElement('div', {
+                    key: 'nav-container',
+                    className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+                }, [
+                    React.createElement('div', {
+                        key: 'nav-content',
+                        className: 'flex items-center justify-between h-16'
+                    }, [
+                        React.createElement('div', {
+                            key: 'logo',
+                            className: 'flex items-center'
+                        }, [
+                            React.createElement('span', {
+                                key: 'logo-text',
+                                className: 'text-2xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent'
+                            }, 'O/.')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav-links',
+                            className: 'hidden md:block'
+                        }, [
+                            React.createElement('div', {
+                                key: 'nav-list',
+                                className: 'ml-10 flex items-baseline space-x-4'
+                            }, navItems.map(item => 
+                                React.createElement('a', {
+                                    key: item.id,
+                                    href: `#${item.id}`,
+                                    onClick: (e) => {
+                                        e.preventDefault();
+                                        setCurrentSection(item.id);
+                                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                                    },
+                                    className: `text-white hover:text-yellow-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${currentSection === item.id ? 'text-yellow-400' : ''}`
+                                }, item.label)
+                            ))
+                        ])
+                    ])
+                ])
+            ]);
+        }
+        
+        // Hero Section
+        function Hero() {
+            const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+            
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    setMousePosition({ x: e.clientX, y: e.clientY });
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+            
+            return React.createElement('section', {
+                id: 'hero',
+                className: 'min-h-screen flex items-center justify-center relative overflow-hidden pt-16'
+            }, [
+                React.createElement('div', {
+                    key: 'hero-content',
+                    className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 relative'
+                }, [
+                    React.createElement(motion.div, {
+                        key: 'hero-text',
+                        initial: { opacity: 0, y: 50 },
+                        animate: { opacity: 1, y: 0 },
+                        transition: { duration: 1, delay: 0.5 },
+                        className: 'mb-8'
+                    }, [
+                        React.createElement('h1', {
+                            key: 'name',
+                            className: 'text-6xl md:text-8xl font-bold mb-4'
+                        }, [
+                            React.createElement('span', {
+                                key: 'name-gradient',
+                                className: 'bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent'
+                            }, 'Omar Aouf')
+                        ]),
+                        React.createElement('h2', {
+                            key: 'title',
+                            className: 'text-2xl md:text-4xl text-gray-300 mb-6'
+                        }, 'Software Engineer & Project Manager'),
+                        React.createElement('p', {
+                            key: 'company',
+                            className: 'text-xl text-gray-400 mb-8'
+                        }, 'DXB Live - Dubai World Trade Centre')
+                    ]),
+                    React.createElement(motion.div, {
+                        key: 'hero-buttons',
+                        initial: { opacity: 0, y: 30 },
+                        animate: { opacity: 1, y: 0 },
+                        transition: { duration: 0.8, delay: 1 },
+                        className: 'flex flex-col sm:flex-row gap-4 justify-center'
+                    }, [
+                        React.createElement('a', {
+                            key: 'view-work',
+                            href: '#projects',
+                            onClick: (e) => {
+                                e.preventDefault();
+                                document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+                            },
+                            className: 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 transform hover:scale-105'
+                        }, 'View My Work'),
+                        React.createElement('a', {
+                            key: 'contact-me',
+                            href: '#contact',
+                            onClick: (e) => {
+                                e.preventDefault();
+                                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                            },
+                            className: 'border-2 border-yellow-400 text-yellow-400 px-8 py-3 rounded-full font-semibold hover:bg-yellow-400 hover:text-black transition-all duration-300 transform hover:scale-105'
+                        }, 'Get In Touch')
+                    ])
+                ])
+            ]);
+        }
+        
+        // About Section
+        function About() {
+            return React.createElement('section', {
+                id: 'about',
+                className: 'py-20 bg-black/20'
+            }, [
+                React.createElement('div', {
+                    key: 'about-container',
+                    className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+                }, [
+                    React.createElement('div', {
+                        key: 'about-content',
+                        className: 'grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'
+                    }, [
+                        React.createElement(motion.div, {
+                            key: 'about-image',
+                            whileInView: { opacity: 1, x: 0 },
+                            initial: { opacity: 0, x: -50 },
+                            transition: { duration: 0.8 },
+                            className: 'relative'
+                        }, [
+                            React.createElement('div', {
+                                key: 'image-container',
+                                className: 'relative w-80 h-80 mx-auto rounded-full overflow-hidden border-4 border-yellow-400/30'
+                            }, [
+                                React.createElement('img', {
+                                    key: 'profile-image',
+                                    src: './attached_assets/2319A346-F132-4861-B6E5-6C2E221BC138_1_102_o_1751922135100.jpeg',
+                                    alt: 'Omar Aouf - Professional Photo',
+                                    className: 'w-full h-full object-cover'
+                                })
+                            ])
+                        ]),
+                        React.createElement(motion.div, {
+                            key: 'about-text',
+                            whileInView: { opacity: 1, x: 0 },
+                            initial: { opacity: 0, x: 50 },
+                            transition: { duration: 0.8 },
+                            className: 'space-y-6'
+                        }, [
+                            React.createElement('h2', {
+                                key: 'about-title',
+                                className: 'text-4xl font-bold text-white mb-6'
+                            }, 'About Me'),
+                            React.createElement('p', {
+                                key: 'about-desc',
+                                className: 'text-gray-300 leading-relaxed text-lg'
+                            }, "I'm a results-driven professional with a strong foundation in software engineering and project management. At DXB Live – Dubai World Trade Centre, I lead cross-functional teams to deliver large-scale digital solutions for government and corporate clients. My expertise spans frontend development with Bootstrap, React.js, and Liferay, backend development with Node.js/Express.js and MongoDB, and enterprise solutions management."),
+                            React.createElement('p', {
+                                key: 'about-passion',
+                                className: 'text-gray-300 leading-relaxed text-lg'
+                            }, "With a passion for creating intuitive user experiences and a focus on execution excellence, I bridge the gap between business goals and technical implementation. I'm certified in leadership, strategic management, and productivity optimization—enabling me to align technical execution with organizational vision.")
+                        ])
+                    ])
+                ])
+            ]);
+        }
+        
+        // Skills Section
+        function Skills() {
+            const skills = [
+                { category: 'Frontend', skills: ['React.js', 'Liferay', 'Bootstrap'], icon: Palette, color: 'blue' },
+                { category: 'Backend', skills: ['Node.js/Express.js', 'Python', 'MongoDB'], icon: Server, color: 'green' },
+                { category: 'Management', skills: ['Team Leadership', 'Strategic Planning', 'Agile/Scrum'], icon: Users, color: 'purple' }
+            ];
+            
+            return React.createElement('section', {
+                id: 'skills',
+                className: 'py-20'
+            }, [
+                React.createElement('div', {
+                    key: 'skills-container',
+                    className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+                }, [
+                    React.createElement('h2', {
+                        key: 'skills-title',
+                        className: 'text-4xl font-bold text-center text-white mb-16'
+                    }, 'Technical Expertise'),
+                    React.createElement('div', {
+                        key: 'skills-grid',
+                        className: 'grid grid-cols-1 md:grid-cols-3 gap-8'
+                    }, skills.map((category, index) => 
+                        React.createElement(motion.div, {
+                            key: category.category,
+                            whileInView: { opacity: 1, y: 0 },
+                            initial: { opacity: 0, y: 50 },
+                            transition: { duration: 0.6, delay: index * 0.2 },
+                            className: 'bg-white/5 backdrop-blur-sm rounded-xl p-8 hover:bg-white/10 transition-all duration-300'
+                        }, [
+                            React.createElement('div', {
+                                key: 'category-header',
+                                className: 'flex items-center mb-6'
+                            }, [
+                                React.createElement(category.icon, {
+                                    key: 'category-icon',
+                                    className: `h-8 w-8 text-${category.color}-400 mr-3`
+                                }),
+                                React.createElement('h3', {
+                                    key: 'category-name',
+                                    className: 'text-xl font-semibold text-white'
+                                }, category.category)
+                            ]),
+                            React.createElement('div', {
+                                key: 'skills-list',
+                                className: 'space-y-4'
+                            }, category.skills.map(skill => 
+                                React.createElement('div', {
+                                    key: skill,
+                                    className: 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 rounded-lg p-3'
+                                }, [
+                                    React.createElement('span', {
+                                        key: 'skill-name',
+                                        className: 'text-white font-medium'
+                                    }, skill)
+                                ])
+                            ))
+                        ])
+                    ))
+                ])
+            ]);
+        }
+        
+        // Projects Section
+        function Projects() {
+            const projects = [
+                {
+                    title: 'Laminim - Luxury Fashion Platform',
+                    description: 'Premium male clothing brand with sophisticated e-commerce experience',
+                    tech: ['Shopify', 'JavaScript', 'Custom Theme', 'UI/UX'],
+                    category: 'E-commerce',
+                    color: 'purple'
+                },
+                {
+                    title: 'Food Forward - F&B Innovation Platform',
+                    description: 'Comprehensive platform for food and beverage consultants and innovators',
+                    tech: ['WordPress', 'JavaScript', 'Figma', 'UI/UX'],
+                    category: 'Consulting',
+                    color: 'green'
+                },
+                {
+                    title: 'Government Digital Platform',
+                    description: 'Confidential corporate system for government event management',
+                    tech: ['Bootstrap', 'React.js', 'Liferay', 'Node.js'],
+                    category: 'Enterprise',
+                    color: 'blue'
+                }
+            ];
+            
+            return React.createElement('section', {
+                id: 'projects',
+                className: 'py-20 bg-black/20'
+            }, [
+                React.createElement('div', {
+                    key: 'projects-container',
+                    className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+                }, [
+                    React.createElement('h2', {
+                        key: 'projects-title',
+                        className: 'text-4xl font-bold text-center text-white mb-16'
+                    }, 'Featured Projects'),
+                    React.createElement('div', {
+                        key: 'projects-grid',
+                        className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
+                    }, projects.map((project, index) => 
+                        React.createElement(motion.div, {
+                            key: project.title,
+                            whileInView: { opacity: 1, y: 0 },
+                            initial: { opacity: 0, y: 50 },
+                            transition: { duration: 0.6, delay: index * 0.2 },
+                            className: 'bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 transition-all duration-300 group'
+                        }, [
+                            React.createElement('div', {
+                                key: 'project-content',
+                                className: 'space-y-4'
+                            }, [
+                                React.createElement('h3', {
+                                    key: 'project-title',
+                                    className: 'text-xl font-bold text-white group-hover:text-yellow-400 transition-colors'
+                                }, project.title),
+                                React.createElement('p', {
+                                    key: 'project-desc',
+                                    className: 'text-gray-300'
+                                }, project.description),
+                                React.createElement('div', {
+                                    key: 'project-tech',
+                                    className: 'flex flex-wrap gap-2'
+                                }, project.tech.map(tech => 
+                                    React.createElement('span', {
+                                        key: tech,
+                                        className: 'bg-yellow-400/20 text-yellow-400 px-3 py-1 rounded-full text-sm'
+                                    }, tech)
+                                ))
+                            ])
+                        ])
+                    ))
+                ])
+            ]);
+        }
+        
+        // Contact Section
+        function Contact() {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                message: ''
+            });
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                // EmailJS integration would go here
+                console.log('Form submitted:', formData);
+                alert('Thank you for your message! I will get back to you soon.');
+                setFormData({ name: '', email: '', message: '' });
+            };
+            
+            const contactMethods = [
+                { icon: Mail, label: 'Email', value: 'aouf460@gmail.com', href: 'mailto:aouf460@gmail.com' },
+                { icon: Phone, label: 'Phone', value: '+971586828506', href: 'tel:+971586828506' },
+                { icon: Linkedin, label: 'LinkedIn', value: 'omar-aouf', href: 'https://www.linkedin.com/in/omar-aouf/' },
+                { icon: Github, label: 'GitHub', value: 'aouf460', href: 'https://github.com/aouf460' }
+            ];
+            
+            return React.createElement('section', {
+                id: 'contact',
+                className: 'py-20'
+            }, [
+                React.createElement('div', {
+                    key: 'contact-container',
+                    className: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+                }, [
+                    React.createElement('h2', {
+                        key: 'contact-title',
+                        className: 'text-4xl font-bold text-center text-white mb-16'
+                    }, 'Get In Touch'),
+                    React.createElement('div', {
+                        key: 'contact-content',
+                        className: 'grid grid-cols-1 lg:grid-cols-2 gap-12'
+                    }, [
+                        React.createElement('div', {
+                            key: 'contact-info',
+                            className: 'space-y-8'
+                        }, [
+                            React.createElement('p', {
+                                key: 'contact-desc',
+                                className: 'text-gray-300 text-lg'
+                            }, "Ready to collaborate on your next project? Let's discuss how I can help bring your vision to life with cutting-edge technology and strategic leadership."),
+                            React.createElement('div', {
+                                key: 'contact-methods',
+                                className: 'space-y-4'
+                            }, contactMethods.map(method => 
+                                React.createElement('a', {
+                                    key: method.label,
+                                    href: method.href,
+                                    target: method.href.startsWith('http') ? '_blank' : undefined,
+                                    className: 'flex items-center space-x-4 text-gray-300 hover:text-yellow-400 transition-colors group'
+                                }, [
+                                    React.createElement(method.icon, {
+                                        key: 'method-icon',
+                                        className: 'h-6 w-6 group-hover:scale-110 transition-transform'
+                                    }),
+                                    React.createElement('div', {
+                                        key: 'method-info'
+                                    }, [
+                                        React.createElement('p', {
+                                            key: 'method-label',
+                                            className: 'font-medium'
+                                        }, method.label),
+                                        React.createElement('p', {
+                                            key: 'method-value',
+                                            className: 'text-sm text-gray-400'
+                                        }, method.value)
+                                    ])
+                                ])
+                            ))
+                        ]),
+                        React.createElement('form', {
+                            key: 'contact-form',
+                            onSubmit: handleSubmit,
+                            className: 'space-y-6'
+                        }, [
+                            React.createElement('div', {
+                                key: 'form-name'
+                            }, [
+                                React.createElement('label', {
+                                    key: 'name-label',
+                                    className: 'block text-sm font-medium text-gray-300 mb-2'
+                                }, 'Name'),
+                                React.createElement('input', {
+                                    key: 'name-input',
+                                    type: 'text',
+                                    required: true,
+                                    value: formData.name,
+                                    onChange: (e) => setFormData({...formData, name: e.target.value}),
+                                    className: 'w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none transition-colors'
+                                })
+                            ]),
+                            React.createElement('div', {
+                                key: 'form-email'
+                            }, [
+                                React.createElement('label', {
+                                    key: 'email-label',
+                                    className: 'block text-sm font-medium text-gray-300 mb-2'
+                                }, 'Email'),
+                                React.createElement('input', {
+                                    key: 'email-input',
+                                    type: 'email',
+                                    required: true,
+                                    value: formData.email,
+                                    onChange: (e) => setFormData({...formData, email: e.target.value}),
+                                    className: 'w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none transition-colors'
+                                })
+                            ]),
+                            React.createElement('div', {
+                                key: 'form-message'
+                            }, [
+                                React.createElement('label', {
+                                    key: 'message-label',
+                                    className: 'block text-sm font-medium text-gray-300 mb-2'
+                                }, 'Message'),
+                                React.createElement('textarea', {
+                                    key: 'message-input',
+                                    required: true,
+                                    rows: 5,
+                                    value: formData.message,
+                                    onChange: (e) => setFormData({...formData, message: e.target.value}),
+                                    className: 'w-full px-4 py-3 bg-white/5 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-yellow-400 focus:outline-none transition-colors resize-none'
+                                })
+                            ]),
+                            React.createElement('button', {
+                                key: 'form-submit',
+                                type: 'submit',
+                                className: 'w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-3 rounded-lg font-semibold hover:shadow-lg hover:shadow-yellow-400/25 transition-all duration-300 transform hover:scale-105'
+                            }, 'Send Message')
+                        ])
+                    ])
+                ])
+            ]);
+        }
+        
+        // Floating Elements
+        function FloatingElements() {
+            return React.createElement('div', {
+                className: 'fixed inset-0 pointer-events-none z-0 overflow-hidden'
+            }, [
+                React.createElement('div', {
+                    key: 'floating-1',
+                    className: 'absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-yellow-400/10 to-purple-600/10 rounded-full blur-xl animate-pulse'
+                }),
+                React.createElement('div', {
+                    key: 'floating-2',
+                    className: 'absolute top-40 right-20 w-24 h-24 bg-gradient-to-br from-blue-400/10 to-green-600/10 rounded-full blur-xl animate-bounce'
+                }),
+                React.createElement('div', {
+                    key: 'floating-3',
+                    className: 'absolute bottom-20 left-1/4 w-40 h-40 bg-gradient-to-br from-purple-400/10 to-pink-600/10 rounded-full blur-xl animate-pulse'
+                })
+            ]);
+        }
+        
+        // Cursor Tracker
+        function CursorTracker() {
+            const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+            
+            useEffect(() => {
+                const handleMouseMove = (e) => {
+                    setMousePos({ x: e.clientX, y: e.clientY });
+                };
+                
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+            
+            return React.createElement('div', {
+                className: 'fixed pointer-events-none z-50',
+                style: {
+                    left: mousePos.x - 10,
+                    top: mousePos.y - 10,
+                    transition: 'all 0.1s ease'
+                }
+            }, [
+                React.createElement('div', {
+                    key: 'cursor-dot',
+                    className: 'w-5 h-5 bg-yellow-400/50 rounded-full blur-sm'
+                })
+            ]);
+        }
+        
+        // Initialize the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(Portfolio));
+    </script>
+</body>
+</html>

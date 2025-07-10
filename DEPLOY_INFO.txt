@@ -1,0 +1,15 @@
+Omar Aouf Portfolio - GitHub Pages Deployment
+=============================================
+Built: Wed Jul  9 08:18:17 PM UTC 2025
+Source: Professional Portfolio
+Features: Award-winning animations, Interactive showcase, Mobile-responsive
+
+Tech Stack:
+- Frontend: Bootstrap, React.js, Liferay
+- Backend: Node.js/Express.js, MongoDB
+- Projects: Laminim (Luxury Fashion), Food Forward (F&B Consulting), Government Platform
+
+Contact:
+- Email: aouf460@gmail.com
+- LinkedIn: https://www.linkedin.com/in/omar-aouf/
+- GitHub: https://github.com/aouf460
